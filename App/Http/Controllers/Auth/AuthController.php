@@ -103,4 +103,11 @@ class AuthController extends BaseController{
                 ]);
             }
     }
+
+    public function logout(){
+        unset($_SESSION['is_logged_in']);
+        $this->auth_service->logout();
+        header("Location: /login");
+        exit;
+    }
 }

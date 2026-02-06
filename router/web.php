@@ -15,6 +15,9 @@ Route::get('/', [PagesController::class, 'landingPage']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/login', [AuthController::class, 'showLoginPage']);
 
+// Logout
+Route::get('/logout', [AuthController::class, 'logout']);
+
 // Register
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/register', [AuthController::class, 'showRegisterPage']);
