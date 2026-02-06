@@ -1,0 +1,17 @@
+CREATE TABLE genealogy_users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    referral_code VARCHAR(20) UNIQUE NOT NULL,
+    referrer_id int DEFAULT NULL,
+    network_size INT DEFAULT 0,
+    network_depth INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- test
+INSERT INTO genealogy_users (username, email, referral_code, referrer_id) VALUES 
+('Alex', 'alex@test.com', 'REF-alex-A111', NULL),
+('Garry', 'garry@test.com', 'REF-garry-B222', 1),
+('Charles', 'charles@test.com', 'REF-charles-C333', 2);

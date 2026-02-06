@@ -1,0 +1,2 @@
+<?php
+use CustomRouter\Route;

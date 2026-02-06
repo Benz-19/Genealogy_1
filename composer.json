@@ -1,0 +1,24 @@
+{
+    "name": "test/genealogy",
+    "description": "Client Hierarchial Structure",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Hp\\Genealogy\\": "src/",
+            "App\\": "app/",
+            "CustomRouter\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "benz-19",
+            "email": "kingsleyikenna2019@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "vlucas/phpdotenv": "^5.6",
+        "ukingsley/customrouter": "^1.0"
+    }
+}
