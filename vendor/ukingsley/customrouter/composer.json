@@ -1,0 +1,15 @@
+{
+    "name": "ukingsley/customrouter",
+    "description": "A Laravel-style routing package for PHP",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "CustomRouter\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
+
