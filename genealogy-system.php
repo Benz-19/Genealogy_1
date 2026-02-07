@@ -3,7 +3,7 @@
  * Plugin Name: Genealogy System
  * Description: Custom Genealogy Application (isolated, WP-safe)
  * Version: 1.0.0
- * Author: B
+ * Author: Kingsley
  */
 
 if (!defined('ABSPATH')) {
