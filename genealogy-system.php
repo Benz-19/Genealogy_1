@@ -15,14 +15,18 @@ define('GENEALOGY_URL', plugin_dir_url(__FILE__));
 
 /*
 |--------------------------------------------------------------------------
-| Load core app (NO execution here)
+| Load app definition ONLY (no execution)
 |--------------------------------------------------------------------------
 */
-require_once GENEALOGY_PATH . 'app.php';
+$genealogy_app = GENEALOGY_PATH . 'public/app.php';
+
+if (file_exists($genealogy_app)) {
+    require_once $genealogy_app;
+}
 
 /*
 |--------------------------------------------------------------------------
-| Assets
+| Assets (loaded only when shortcode is used)
 |--------------------------------------------------------------------------
 */
 add_action('wp_enqueue_scripts', function () {
@@ -47,7 +51,9 @@ add_action('wp_enqueue_scripts', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Shortcode
+| Shortcode registration
 |--------------------------------------------------------------------------
 */
-add_shortcode('genealogy_app', 'genealogy_render_app');
+if (function_exists('genealogy_render_app')) {
+    add_shortcode('genealogy_app', 'genealogy_render_app');
+}
