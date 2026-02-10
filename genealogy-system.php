@@ -10,6 +10,20 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Load Composer autoloader (CRITICAL)
+$autoload = GENEALOGY_PATH . 'vendor/autoload.php';
+
+if (!file_exists($autoload)) {
+    wp_die(
+        '<h1>GENEALOGY CRITICAL ERROR</h1>
+        <p>Composer autoload.php not found.</p>
+        <p>Path expected: <code>' . esc_html($autoload) . '</code></p>'
+    );
+}
+
+require_once $autoload;
+
+
 /*
 |--------------------------------------------------------------------------
 | FORCE ERROR DISPLAY (plugin-level, no wp-config needed)
@@ -17,7 +31,8 @@ if (!defined('ABSPATH')) {
 */
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 
 /*
 |--------------------------------------------------------------------------
