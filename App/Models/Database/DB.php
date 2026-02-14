@@ -45,6 +45,10 @@ class DB{
         if(!$this->conn){
             $this->__construct();
         }
+        
+        if(!$this->conn){
+            throw new \Exception('Database connection could not be established.');
+        }
     }
 
     
@@ -151,20 +155,20 @@ class DB{
 
 
     public function fetchAllColumn(string $query, array $params = []): array 
-{
-    try {
-        $this->verifyConnection();
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute($params);
-        
-        // This returns ALL rows as a flat array like [ 'CODE1', 'CODE2', 'CODE3' ]
-        return $stmt->fetchAll(\PDO::FETCH_COLUMN);
-        
-    } catch (PDOException $error) {
-        error_log('DB::fetchAllColumn Error: ' . $error->getMessage());
-        return [];
+    {
+        try {
+            $this->verifyConnection();
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute($params);
+            
+            // This returns ALL rows as a flat array like [ 'CODE1', 'CODE2', 'CODE3' ]
+            return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+            
+        } catch (PDOException $error) {
+            error_log('DB::fetchAllColumn Error: ' . $error->getMessage());
+            return [];
+        }
     }
-}
 
     // Starts a transaction
     public function beginTransaction() {
@@ -174,16 +178,19 @@ class DB{
 
     // Commits the changes
     public function commit() {
+        $this->verifyConnection();
         return $this->conn->commit();
     }
 
     // Undoes changes if something fails
     public function rollBack() {
+        $this->verifyConnection();
         return $this->conn->rollBack();
     }
 
     // Getting the ID of the user just inserted
     public function lastInsertId() {
+        $this->verifyConnection();
         return $this->conn->lastInsertId();
     }
 }

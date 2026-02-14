@@ -2,12 +2,17 @@ let currentPath = [];
 
 async function fetchGenealogyData() {
     try {
-        const response = await fetch('/api/genealogy/tree');
-        if (!response.ok) throw new Error('Failed to fetch tree');
+        const response = await fetch('/genealogy/api/genealogy/tree');
+        const rawText = await response.text(); // Get raw response
         
-        const data = await response.json();
-        currentPath = [data]; // Set the root of the path to the logged-in user
-        render();
+        try {
+            const data = JSON.parse(rawText); // Try parsing manually
+            currentPath = [data];
+            render();
+        } catch (parseError) {
+            console.error("Malformed JSON received:", rawText); // This shows the "Route:..." culprit
+            throw new Error('Server sent invalid data format');
+        }
     } catch (error) {
         document.getElementById('tree-display').innerHTML = 
             `<div class="empty-msg" style="color: red;">Error: ${error.message}</div>`;

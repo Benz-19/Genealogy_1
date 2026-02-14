@@ -1,29 +1,23 @@
 <?php
-
-use App\Http\Controllers\Auth\AuthController;
 use CustomRouter\Route;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Pages\PagesController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Genealogy\GenealogyController;
 
+/**
+ * Web Routes
+ * Normalized to match the regex-stripped paths
+ */
 
-require __DIR__ . "/../vendor/autoload.php";
-
-// Landing page
+// GET Routes
 Route::get('/', [PagesController::class, 'landingPage']);
-// Login
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/login', [AuthController::class, 'showLoginPage']);
+Route::get('/genealogy/loginpage', [AuthController::class, 'showLoginPage']);
+Route::get('/genealogy/genealogy-dashboard', [UserController::class, 'showDashboard']);
+Route::get('/genealogy/genealogy-app', [GenealogyController::class, 'showGenealogyPage']);
+Route::get('/genealogy/logout', [AuthController::class, 'logout']);
 
-// Logout
-Route::get('/logout', [AuthController::class, 'logout']);
-
-// Register
-Route::post('/register', [AuthController::class, 'register']);
-Route::get('/register', [AuthController::class, 'showRegisterPage']);
-
-// Dashboard
-Route::get('/genealogy-dashboard', [UserController::class, 'showDashboard']);
-
-// Genealogy
-Route::get('/genealogy', [GenealogyController::class, 'showGenealogyPage']);
+// POST Routes
+Route::post('/', [AuthController::class, 'login']); 
+Route::post('/genealogy/loginpage', [AuthController::class, 'login']); 
+Route::post('/genealogy/register', [AuthController::class, 'register']);

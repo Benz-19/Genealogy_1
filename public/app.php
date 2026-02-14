@@ -1,47 +1,49 @@
 <?php
+use CustomRouter\Route;
 
-if (!defined('ABSPATH')) {
-    exit;
-}
+if (!defined('ABSPATH')) exit;
 
 function genealogy_render_app() {
-
-    // Never run in admin / REST
-    if (is_admin() || defined('REST_REQUEST')) {
-        return '';
-    }
-
-    // ---- SAFETY CHECKS ----
-    $autoload = GENEALOGY_PATH . 'vendor/autoload.php';
-    $bootstrap = GENEALOGY_PATH . 'bootstrap.php';
-    $api = GENEALOGY_PATH . 'router/api.php';
-    $web = GENEALOGY_PATH . 'router/web.php';
-
-    foreach ([$autoload, $bootstrap, $api, $web] as $file) {
-        if (!file_exists($file)) {
-            return '<pre>Genealogy error: missing file ' . esc_html(basename($file)) . '</pre>';
-        }
-    }
-
-    // ---- LOAD DEPENDENCIES ----
-    require_once $autoload;
-    require_once $bootstrap;
-    require_once $api;
-    require_once $web;
-
-    if (!class_exists('CustomRouter\Route')) {
-        return '<pre>Genealogy error: Router not loaded</pre>';
-    }
+    if (is_admin()) return '';
 
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
 
-    // Normalize URL for your router
-    $path = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
-    $_SERVER['REQUEST_URI'] = '/' . $path;
+    try {
+        require_once GENEALOGY_PATH . 'bootstrap.php';
+        require_once GENEALOGY_PATH . 'router/web.php';
+        require_once GENEALOGY_PATH . 'router/api.php';
 
-    ob_start();
-    CustomRouter\Route::dispatch();
-    return ob_get_clean();
+        $method = $_SERVER['REQUEST_METHOD'];
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        
+        // Normalize: Remove '/genealogy' prefix and clean slashes
+        $internalPath = preg_replace('#^/genealogy(/|$)#i', '/', $path);
+        $normalizedPath = '/' . ltrim($internalPath, '/');
+        if ($normalizedPath !== '/') {
+            $normalizedPath = rtrim($normalizedPath, '/');
+        }
+
+        // Determine if this is an API request
+        $isApi = str_contains($normalizedPath, '/api/');
+
+        if ($isApi) {
+            // Kill any previous output/buffers to ensure clean JSON
+            while (ob_get_level()) {
+                ob_end_clean();
+            }
+            Route::dispatch($method, $normalizedPath);
+            // Controllers for API will call exit, so this line is rarely reached
+            exit; 
+        } else {
+            ob_start();
+            Route::dispatch($method, $normalizedPath);
+            return ob_get_clean();
+        }
+
+    } catch (Throwable $e) {
+        if (ob_get_length()) ob_end_clean();
+        return '<pre style="color:red;background:#111;padding:12px;">Router Error: ' . esc_html($e->getMessage()) . '</pre>';
+    }
 }

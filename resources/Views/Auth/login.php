@@ -83,7 +83,7 @@
         <div class="error-msg"><?php echo htmlspecialchars($errorMessage); ?></div>
     <?php endif; ?>
 
-    <form action="/login" method="POST">
+    <form action="<?php echo home_url('/genealogy/loginpage/'); ?>" method="POST">
         <div class="form-group">
             <label>Email</label>
             <input type="email" name="email" value="<?php echo htmlspecialchars($oldInput['email'] ?? ''); ?>" required>
@@ -96,7 +96,7 @@
     </form>
 
     <div class="link-text">
-        New here? <a href="/register">Create Account</a>
+        New here? <a href="<?php echo home_url('/genealogy/register/'); ?>">Create Account</a>
     </div>
 </div>
 

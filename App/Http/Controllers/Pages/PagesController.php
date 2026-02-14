@@ -1,5 +1,5 @@
 <?php
-namespace App\HTTP\Controllers\Pages;
+namespace App\Http\Controllers\Pages;
 
 use App\Core\BaseController;
 

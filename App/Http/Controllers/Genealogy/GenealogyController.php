@@ -22,46 +22,41 @@ class GenealogyController extends BaseController {
     }
 
     // API Endpoint for the JavaScript Tree
-    public function getTreeData() {
-        header('Content-Type: application/json');
-        $userId = $_SESSION["user_id"] ?? null;
+     public function getTreeData() {
+        // Clear any accidental output (like the "Route: " string)
+        if (ob_get_length()) ob_clean();
 
+        header('Content-Type: application/json');
+        
+        $userId = $_SESSION["user_id"] ?? null;
         if (!$userId) {
             http_response_code(401);
             echo json_encode(['error' => 'Unauthorized']);
-            return;
+            exit;
         }
 
         $data = $this->genealogy_service->getFormattedTree($userId);
         echo json_encode($data);
+        
+        // Terminate immediately so WP doesn't add HTML
+        exit;
     }
 
-    // API Endpoint for Stats
     public function getStats() {
+        if (ob_get_length()) ob_clean();
         header('Content-Type: application/json');
         $userId = $_SESSION["user_id"] ?? null;
-
-        if (!$userId) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Unauthorized']);
-            return;
-        }
-
-        $stats = $this->genealogy_service->getNetworkStats($userId);
-        echo json_encode($stats);
+        $data = $this->genealogy_service->getUserStats($userId);
+        echo json_encode($data);
+        exit;
     }
 
-    // API Endpoint for Breadcrumbs/Upline
     public function getUplineData() {
+        if (ob_get_length()) ob_clean();
         header('Content-Type: application/json');
-        $userId = $_GET['id'] ?? $_SESSION['user_id'];
-
-        try {
-            $upline = $this->genealogy_service->getFullUpline((int)$userId);
-            echo json_encode($upline);
-        } catch (\Exception $e) {
-            http_response_code(500);
-            echo json_encode(['error' => $e->getMessage()]);
-        }
+        $userId = $_SESSION["user_id"] ?? null;
+        $data = $this->genealogy_service->getUpline($userId);
+        echo json_encode($data);
+        exit;
     }
 }

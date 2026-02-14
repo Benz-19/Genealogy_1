@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JST Genealogy Explorer</title>
     <!-- Styles -->
-    <link rel="stylesheet" href="/css/genealogy.css">
+    <link rel="stylesheet" href="css/genealogy.css">
 </head>
 
 <body>
@@ -33,11 +33,11 @@
     </div>
 
     <!-- Js -->
-    <script src="/js/genealogy.js"></script>
+    <script src="js/genealogy.js"></script>
     <script>
     function handleLogout() {
         if (confirm('Are you sure you want to logout?')) {
-            window.location.href = '/logout';
+            window.location.href = '/genealogy/logout';
         }
     }
     </script>
