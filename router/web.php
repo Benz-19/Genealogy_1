@@ -12,10 +12,12 @@ use App\Http\Controllers\Genealogy\GenealogyController;
 
 // GET Routes
 Route::get('/', [PagesController::class, 'landingPage']);
+Route::get('/genealogy', [PagesController::class, 'landingPage']);
 Route::get('/genealogy/loginpage', [AuthController::class, 'showLoginPage']);
 Route::get('/genealogy/genealogy-dashboard', [UserController::class, 'showDashboard']);
 Route::get('/genealogy/genealogy-app', [GenealogyController::class, 'showGenealogyPage']);
 Route::get('/genealogy/logout', [AuthController::class, 'logout']);
+Route::get('/genealogy/register', [AuthController::class, 'showRegisterPage']);
 
 // POST Routes
 Route::post('/', [AuthController::class, 'login']); 

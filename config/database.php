@@ -6,5 +6,5 @@ return [
     'db_password' => $_ENV['DB_PASSWORD'],
     'db_host' => $_ENV['DB_HOST'],
     'charset' => 'utf8mb4',
-    'port' => '3306'
+    'port' => '10004'
 ];

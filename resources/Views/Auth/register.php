@@ -30,7 +30,7 @@
         <div class="success-msg"><?php echo htmlspecialchars($successMessage); ?></div>
     <?php endif; ?>
 
-    <form action="/register" method="POST">
+    <form action="<?php echo home_url('/genealogy/register/'); ?>" method="POST">
         <div class="form-group">
             <label>Username</label>
             <input type="text" name="username" value="<?php echo htmlspecialchars($oldInput['username'] ?? ''); ?>" required>
@@ -55,7 +55,7 @@
     </form>
 
     <div class="link-text">
-        Already have an account? <a href="/login">Sign In</a>
+        Already have an account? <a href="<?php echo home_url('/genealogy/loginpage/'); ?>">Sign In</a>
     </div>
 </div>
 
